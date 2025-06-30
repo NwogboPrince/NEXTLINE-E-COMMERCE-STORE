@@ -78,7 +78,7 @@ E-commerce-site
 
 - **Accessible & Fast:**  
   Semantic HTML, keyboard navigation, and fast load times.
-
+- Added a search functionality to find products easily.
 ---
 
 ## Features
@@ -88,7 +88,6 @@ E-commerce-site
 
 ## Future Enhancements
 - Implement user authentication for a personalized shopping experience.
-- Add a search functionality to find products easily.
 - Improve the styling and responsiveness of the site for better user experience.
 
 ---
