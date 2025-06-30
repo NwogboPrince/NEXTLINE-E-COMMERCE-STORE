@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXTLINE-STORE</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      :root {
+      --primary: #800778;      /* Vibrant orange */
+      --primary-dark: #800778; /* Deeper orange */
+      --secondary: #fff0e6;    /* Soft background */
+      --accent: #ff66cc;       /* Warm yellow accent */
+      --text-main: #22223b;    /* Deep navy text */
+      --text-light: #4f3e6a;   /* Muted text */
+      }
+      body {
+      background: linear-gradient(135deg, var(--secondary) 0%, #fff 100%);
+      }
+      .fade-in { animation: fadeIn 0.5s; }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      .glass {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      }
+      .slide-in-up { animation: slideInUp 0.6s cubic-bezier(.4,0,.2,1); }
+      @keyframes slideInUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      .pop { animation: pop 0.3s cubic-bezier(.4,0,.2,1); }
+      @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+<!-- Redesigned Navbar -->
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <!-- Logo & Brand -->
+    <a href="Index.html" class="flex items-center gap-3 group">
+      <img src="./images/icons/Copilot_20250628_173013.png" alt="Logo" class="h-12 w-auto rounded-lg shadow-md group-hover:scale-105 transition-transform duration-200">
+      <span class="font-extrabold text-lg tracking-wide text-purple-800 group-hover:text-purple-600 transition">NEXTLINE-STORE</span>
+    </a>
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex items-center gap-8 ml-10">
+      <a href="Index.html" class="text-purple-800 font-semibold hover:text-purple-600 transition">Home</a>
+      <a href="order.html" class="text-purple-800 font-semibold hover:text-purple-600 transition">Orders</a>
+      <a href="#" class="text-purple-800 font-semibold hover:text-purple-600 transition">Contact</a>
+    </nav>
+    <!-- Search & Actions -->
+    <div class="flex items-center gap-4 flex-1 md:flex-none md:ml-8">
+      <div class="flex-1">
+        <input type="text" placeholder="Search products..." class="w-full px-4 py-2 rounded-lg text-gray-800 border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 glass transition">
+      </div>
+      <button id="login-btn" class="bg-purple-700 hover:bg-purple-900 text-white px-4 py-2 rounded-lg font-semibold shadow transition pop hidden md:inline-block">Login</button>
+      <button id="cart-btn" class="relative flex items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-purple-900 px-3 py-2 rounded-lg font-bold shadow transition pop">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7A1 1 0 0 0 6.6 17h10.8a1 1 0 0 0 .95-.68L21 13M7 13V6a1 1 0 0 1 1-1h2m4 0h2a1 1 0 0 1 1 1v7"></path>
+        </svg>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-purple-700 text-white rounded-full px-2 text-xs font-bold">0</span>
+      </button>
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="md:hidden ml-2 text-purple-800 focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden bg-white border-t border-purple-100 px-4 py-3 hidden">
+    <nav class="flex flex-col gap-3">
+      <a href="Index.html" class="text-purple-800 font-semibold hover:text-purple-600 transition">Home</a>
+      <a href="order.html" class="text-purple-800 font-semibold hover:text-purple-600 transition">Orders</a>
+      <a href="#" class="text-purple-800 font-semibold hover:text-purple-600 transition">Contact</a>
+      <button id="mobile-login-btn" class="bg-purple-700 hover:bg-purple-900 text-white px-4 py-2 rounded-lg font-semibold shadow transition pop mt-2">Login</button>
+    </nav>
+  </div>
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileLoginBtn = document.getElementById('mobile-login-btn');
+      if (menuBtn && mobileMenu) {
+        menuBtn.onclick = () => mobileMenu.classList.toggle('hidden');
+      }
+      if (mobileLoginBtn) {
+        mobileLoginBtn.onclick = () => {
+          document.getElementById('login-btn').click();
+          mobileMenu.classList.add('hidden');
+        };
+      }
+    });
+  </script>
+</header>
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-sm p-6 fade-in relative glass slide-in-up">
+      <button onclick="toggleLogin()" class="absolute top-2 right-2 text-2xl text-gray-400 hover:text-red-500">&times;</button>
+      <h3 class="text-xl font-bold mb-4 text-purple-900">Sign In</h3>
+      <form onsubmit="login(event)">
+        <input type="text" id="username" placeholder="Username" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-400" required>
+        <input type="password" id="password" placeholder="Password" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-400" required>
+        <button type="submit" class="w-full bg-purple-700 hover:bg-purple-900 text-white py-2 rounded-lg font-semibold transition">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Products Section -->
+  <main class="max-w-7xl mx-auto py-10 px-4">
+    <h2 class="text-3xl font-bold mb-8 text-purple-900 slide-in-up">Featured Products</h2>
+    <div id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <!-- Products will be injected here -->
+    </div>
+  </main>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 fade-in relative glass slide-in-up">
+      <button onclick="toggleCart()" class="absolute top-2 right-2 text-2xl text-gray-400 hover:text-red-500">&times;</button>
+      <h3 class="text-xl font-bold mb-4 text-purple-900">Your Cart</h3>
+      <div id="cart-items" class="space-y-4"></div>
+      <div class="mt-6 flex justify-between items-center">
+        <span class="font-bold text-lg">Total:</span>
+        <span id="cart-total" class="font-bold text-lg text-purple-900">$0.00</span>
+      </div>
+      <button onclick="checkout()" class="mt-6 w-full bg-purple-700 hover:bg-purple-900 text-white py-2 rounded-lg font-semibold transition pop">Checkout</button>
+    </div>
+  </div>
+  <!-- Redesigned Footer -->
+  <footer class="bg-gradient-to-r from-purple-900 to-purple-700 text-white py-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Brand & Social -->
+      <div class="flex flex-col items-center md:items-start gap-4">
+        <div class="flex items-center gap-3">
+          <img src="./images/icons/Copilot_20250628_173013.png" alt="NEXTLINE-STORE Logo" class="h-14 w-auto rounded-lg shadow-md">
+          <span class="font-extrabold text-2xl tracking-wide">NEXTLINE-STORE</span>
+        </div>
+        <p class="text-gray-200 text-sm mt-2">Your one-stop shop for quality products and great deals.</p>
+        <div class="flex gap-3 mt-3">
+          <a href="#" aria-label="Facebook" class="hover:text-yellow-400 transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 5.006 3.657 9.128 8.438 9.877v-6.987h-2.54v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.128 22 17.006 22 12"></path></svg></a>
+          <a href="#" aria-label="Twitter" class="hover:text-yellow-400 transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 16.11 4c-2.37 0-4.29 1.92-4.29 4.29 0 .34.04.67.11.99C7.69 8.99 4.07 7.13 1.64 4.15c-.37.64-.58 1.39-.58 2.19 0 1.51.77 2.84 1.95 3.62-.72-.02-1.39-.22-1.98-.55v.06c0 2.11 1.5 3.87 3.5 4.27-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.68 2.11 2.91 3.97 2.94A8.6 8.6 0 0 1 2 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.39-.01-.58A8.7 8.7 0 0 0 24 4.59a8.48 8.48 0 0 1-2.54.7z"></path></svg></a>
+          <a href="#" aria-label="Instagram" class="hover:text-yellow-400 transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.056 1.96.24 2.42.41.58.21 1 .46 1.44.9.44.44.69.86.9 1.44.17.46.354 1.25.41 2.42.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.24 1.96-.41 2.42-.21.58-.46 1-.9 1.44-.44.44-.86.69-1.44.9-.46.17-1.25.354-2.42.41-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.96-.24-2.42-.41-.58-.21-1-.46-1.44-.9-.44-.44-.69-.86-.9-1.44-.17-.46-.354-1.25-.41-2.42C2.212 15.784 2.2 15.4 2.2 12s.012-3.584.07-4.85c.056-1.17.24-1.96.41-2.42.21-.58.46-1 .9-1.44.44-.44.86-.69 1.44-.9.46-.17 1.25-.354 2.42-.41C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.736 0 8.332.012 7.052.07c-1.276.058-2.15.24-2.91.51-.8.28-1.48.66-2.15 1.33-.67.67-1.05 1.35-1.33 2.15-.27.76-.452 1.634-.51 2.91C.012 8.332 0 8.736 0 12c0 3.264.012 3.668.07 4.948.058 1.276.24 2.15.51 2.91.28.8.66 1.48 1.33 2.15.67.67 1.35 1.05 2.15 1.33.76.27 1.634.452 2.91.51C8.332 23.988 8.736 24 12 24s3.668-.012 4.948-.07c1.276-.058 2.15-.24 2.91-.51.8-.28 1.48-.66 2.15-1.33.67-.67 1.05-1.35 1.33-2.15.27-.76.452-1.634.51-2.91.058-1.28.07-1.684.07-4.948s-.012-3.668-.07-4.948c-.058-1.276-.24-2.15-.51-2.91-.28-.8-.66-1.48-1.33-2.15-.67-.67-1.35-1.05-2.15-1.33-.76-.27-1.634-.452-2.91-.51C15.668.012 15.264 0 12 0zm0 5.838A6.162 6.162 0 1 0 18.162 12 6.162 6.162 0 0 0 12 5.838zm0 10.162A4 4 0 1 1 16 12a4 4 0 0 1-4 4zm6.406-11.845a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"></path></svg></a>
+        </div>
+      </div>
+      <!-- Navigation Links -->
+      <div class="flex flex-col items-center gap-2">
+        <span class="font-semibold text-lg mb-2">Quick Links</span>
+        <a href="Index.html" class="hover:underline hover:text-yellow-400 transition">Home</a>
+        <a href="order.html" class="hover:underline hover:text-yellow-400 transition">Orders</a>
+        <a href="#" class="hover:underline hover:text-yellow-400 transition">Contact</a>
+        <a href="#" class="hover:underline hover:text-yellow-400 transition">Privacy Policy</a>
+      </div>
+      <!-- Contact & Copyright -->
+      <div class="flex flex-col items-center md:items-end gap-2">
+        <span class="font-semibold text-lg mb-2">Contact Us</span>
+        <span class="text-gray-200 text-sm">Email: <a href="mailto:support@nextline-store.com" class="underline hover:text-yellow-400">support@nextline-store.com</a></span>
+        <span class="text-gray-200 text-sm">Phone: <a href="tel:+1234567890" class="underline hover:text-yellow-400">+2349044902984</a></span>
+        <div class="mt-4 text-xs text-gray-300 text-center md:text-right">
+          &copy; 2025 NEXTLINE-STORE.<br>
+          Built by <span class="text-yellow-400 font-semibold">NWOGBO PRINCE</span>.<br>
+          <span class="inline-block mt-1">All rights reserved.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+  const products = [
+    {
+      id: 1,
+      name: "Athletic Cotton Socks - 6 pairs",
+      price: 10.90,
+      rating: 4.5,
+      reviews: 87,
+      image: "./images/products/athletic-cotton-socks-6-pairs.jpg",
+      desc: "Comfortable, durable socks for everyday use."
+    },
+    {
+      id: 2,
+      name: "Intermediate Size Basketball",
+      price: 20.95,
+      rating: 4.0,
+      reviews: 127,
+      image: "./images/products/intermediate-composite-basketball.jpg",
+      desc: "High-quality basketball for indoor and outdoor play."
+    },
+    {
+      id: 3,
+      name: "Adults Plain Cotton T-Shirt - 2 Pack",
+      price: 7.99,
+      rating: 4.5,
+      reviews: 56,
+      image: "./images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+      desc: "Soft, breathable cotton t-shirts in a value pack."
+    },
+    {
+      id: 4,
+      name: "Running Shoes",
+      price: 49.99,
+      rating: 4.7,
+      reviews: 210,
+      image: "./images/products/knit-athletic-sneakers-gray.jpg",
+      desc: "Lightweight running shoes for all terrains."
+    },
+  {
+    id: 5,
+    name: "2 Slot Toaster - Black",
+    price: 29.99,
+    rating: 4.5,
+    reviews: 150,
+    image: "./images/products/black-2-slot-toaster.jpg",
+    desc: "Compact toaster with adjustable browning control for perfect toast every time."
+  },
+  {
+    id: 6,
+    name: "White Dinner Plate Set",
+      price: 20.67,
+    rating: 3.5,
+    reviews: 100,
+     image: "images/products/6-piece-white-dinner-plate-set.jpg",
+     desc: "6 Pieces of white Dinner Plate Set For Your Guest",
+  },
+  {
+    id: 7,
+     name: "6-Piece Nonstick, Carbon Steel Oven Bakeware Baking Set",
+    price: 23.44,
+    rating: 2.5,
+    reviews: 100,
+    image: "./images/products/6-piece-non-stick-baking-set.webp",
+    desc: "6-Piece Nonstick, Carbon Steel Oven Bakeware Baking Set",
+  },
+  {
+    id: "dd82ca78-a18b-4e2a-9250-31e67412f98d",
+    image: "images/products/plain-hooded-fleece-sweatshirt-yellow.jpg",
+    name: "Plain Hooded Fleece Sweatshirt",
+    desc: "Plain Hooded Fleece Sweatshirt",
+    rating: {
+      stars: 4.5,
+      count: 317
+    },
+    priceCents: 2400,
+    keywords: [
+      "hoodies",
+      "sweaters",
+      "apparel"
+    ]
+  },
+  {
+    id: "77919bbe-0e56-475b-adde-4f24dfed3a04",
+    image: "images/products/luxury-tower-set-6-piece.jpg",
+    name: "Luxury Towel Set - Graphite Gray",
+    desc: "Luxury Towel Set - Graphite Gray",
+    rating: {
+      stars: 4.5,
+      count: 144
+    },
+    priceCents: 3599,
+    keywords: [
+      "bathroom",
+      "washroom",
+      "restroom",
+      "towels",
+      "bath towels"
+    ]
+  },
+  {
+    id: "3fdfe8d6-9a15-4979-b459-585b0d0545b9",
+    image: "images/products/liquid-laundry-detergent-plain.jpg",
+    name: "Liquid Laundry Detergent, 110 Loads, 82.5 Fl Oz",
+    desc: "Liquid Laundry Detergent, 110 Loads, 82.5 Fl Oz",
+    rating: {
+      stars: 4.5,
+      count: 305
+    },
+    priceCents: 2899,
+    keywords: [
+      "bathroom",
+      "cleaning"
+    ]
+  },
+  {
+    id: "58b4fc92-e98c-42aa-8c55-b6b79996769a",
+    image: "images/products/knit-athletic-sneakers-gray.jpg",
+    name: "Waterproof Knit Athletic Sneakers - Gray",
+    desc: "Waterproof Knit Athletic Sneakers - Gray",
+    rating: {
+      stars: 4,
+      count: 89
+    },
+    priceCents: 3390,
+    keywords: [
+      "shoes",
+      "running shoes",
+      "footwear"
+    ]
+  },
+  {
+    id: "5968897c-4d27-4872-89f6-5bcb052746d7",
+    image: "images/products/women-chiffon-beachwear-coverup-black.jpg",
+    name: "Women's Chiffon Beachwear Cover Up - Black",
+    desc: "Women's Chiffon Beachwear Cover Up - Black",
+    rating: {
+      stars: 4.5,
+      count: 235
+    },
+    priceCents: 2070,
+    keywords: [
+      "robe",
+      "swimsuit",
+      "swimming",
+      "bathing",
+      "apparel"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  },
+  {
+    id: "aad29d11-ea98-41ee-9285-b916638cac4a",
+    image: "images/products/round-sunglasses-black.jpg",
+    name: "Round Sunglasses",
+    desc: "Round Sunglasses",
+    rating: {
+      stars: 4.5,
+      count: 30
+    },
+    priceCents: 1560,
+    keywords: [
+      "accessories",
+      "shades"
+    ]
+  },
+  {
+    id: "04701903-bc79-49c6-bc11-1af7e3651358",
+    image: "images/products/women-beach-sandals.jpg",
+    name: "Women's Two Strap Buckle Sandals - Tan",
+     desc: "Women's Two Strap Buckle Sandals - Tan",
+    rating: {
+      stars: 4.5,
+      count: 562
+    },
+    priceCents: 2499,
+    keywords: [
+      "footwear",
+      "sandals",
+      "womens",
+      "beach",
+      "summer"
+    ]
+  },
+  {
+    id: "901eb2ca-386d-432e-82f0-6fb1ee7bf969",
+    image: "images/products/blackout-curtain-set-beige.webp",
+    name: "Blackout Curtains Set 4-Pack - Beige",
+     desc: "Blackout Curtains Set 4-Pack - Beige",
+    rating: {
+      stars: 4.5,
+      count: 232
+    },
+    priceCents: 4599,
+    keywords: [
+      "bedroom",
+      "curtains",
+      "home"
+    ]
+  },
+  {
+    id: "82bb68d7-ebc9-476a-989c-c78a40ee5cd9",
+    image: "images/products/men-slim-fit-summer-shorts-gray.jpg",
+    name: "Men's Slim-Fit Summer Shorts",
+    rating: {
+      stars: 4,
+      count: 160
+    },
+    priceCents: 1699,
+    keywords: [
+      "shorts",
+      "apparel",
+      "mens"
+    ]
+  },
+  {
+    id: "c2a82c5e-aff4-435f-9975-517cfaba2ece",
+    image: "images/products/electric-glass-and-steel-hot-water-kettle.webp",
+    name: "Electric Glass and Steel Hot Tea Water Kettle - 1.7-Liter",
+    rating: {
+      stars: 5,
+      count: 846
+    },
+    priceCents: 3074,
+    keywords: [
+      "water boiler",
+      "appliances",
+      "kitchen"
+    ]
+  },
+  {
+    id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
+    image: "images/products/facial-tissue-2-ply-18-boxes.jpg",
+    name: "Ultra Soft Tissue 2-Ply - 18 Box",
+    rating: {
+      stars: 4,
+      count: 99
+    },
+    priceCents: 2374,
+    keywords: [
+      "kleenex",
+      "tissues",
+      "kitchen",
+      "tissues box",
+      "napkins"
+    ]
+  },
+  {
+    id: "a82c6bac-3067-4e68-a5ba-d827ac0be010",
+    image: "images/products/straw-sunhat.webp",
+    name: "Straw Lifeguard Sun Hat",
+    rating: {
+      stars: 4,
+      count: 215
+    },
+    priceCents: 2200,
+    keywords: [
+      "hats",
+      "straw hats",
+      "summer",
+      "apparel"
+    ]
+  },
+  {
+    id: "e4f64a65-1377-42bc-89a5-e572d19252e2",
+    image: "images/products/sky-flower-stud-earrings.webp",
+    name: "Sterling Silver Sky Flower Stud Earrings",
+    rating: {
+      stars: 4.5,
+      count: 52
+    },
+    priceCents: 1799,
+    keywords: [
+      "jewelry",
+      "accessories",
+      "womens"
+    ]
+  },
+  {
+    id: "b0f17cc5-8b40-4ca5-9142-b61fe3d98c85",
+    image: "images/products/women-stretch-popover-hoodie-black.jpg",
+    name: "Women's Stretch Popover Hoodie",
+    rating: {
+      stars: 4.5,
+      count: 2465
+    },
+    priceCents: 1374,
+    keywords: [
+      "hooded",
+      "hoodies",
+      "sweaters",
+      "womens",
+      "apparel"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  },
+  {
+    id: "a93a101d-79ef-4cf3-a6cf-6dbe532a1b4a",
+    image: "images/products/bathroom-rug.jpg",
+    name: "Bathroom Bath Rug Mat 20 x 31 Inch - Grey",
+    rating: {
+      stars: 4.5,
+      count: 119
+    },
+    priceCents: 1250,
+    keywords: [
+      "bathmat",
+      "bathroom",
+      "home"
+    ]
+  },
+  {
+    id: "4f4fbcc2-4e72-45cc-935c-9e13d79cc57f",
+    image: "images/products/women-knit-ballet-flat-black.jpg",
+    name: "Women's Knit Ballet Flat",
+    rating: {
+      stars: 4,
+      count: 326
+    },
+    priceCents: 2640,
+    keywords: [
+      "shoes",
+      "flats",
+      "womens",
+      "footwear"
+    ]
+  },
+  {
+    id: "8b5a2ee1-6055-422a-a666-b34ba28b76d4",
+    image: "images/products/men-golf-polo-t-shirt-blue.jpg",
+    name: "Men's Regular-Fit Quick-Dry Golf Polo Shirt",
+    rating: {
+      stars: 4.5,
+      count: 2556
+    },
+    priceCents: 1599,
+    keywords: [
+      "tshirts",
+      "shirts",
+      "apparel",
+      "mens"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  },
+  {
+    id: "b86ddc8b-3501-4b17-9889-a3bad6fb585f",
+    image: "images/products/trash-can-with-foot-pedal-50-liter.jpg",
+    name: "Trash Can with Foot Pedal - Brushed Stainless Steel",
+    rating: {
+      stars: 4.5,
+      count: 2286
+    },
+    priceCents: 8300,
+    keywords: [
+      "garbage",
+      "bins",
+      "cans",
+      "kitchen"
+    ]
+  },
+  {
+    id: "19c6a64a-5463-4d45-9af8-e41140a4100c",
+    image: "images/products/duvet-cover-set-blue-twin.jpg",
+    name: "Duvet Cover Set with Zipper Closure",
+    rating: {
+      stars: 4,
+      count: 456
+    },
+    priceCents: 2399,
+    keywords: [
+      "bedroom",
+      "bed sheets",
+      "sheets",
+      "covers",
+      "home"
+    ]
+  },
+  {
+    id: "d2785924-743d-49b3-8f03-ec258e640503",
+    image: "images/products/women-chunky-beanie-gray.webp",
+    name: "Women's Chunky Cable Beanie - Gray",
+    rating: {
+      stars: 5,
+      count: 83
+    },
+    priceCents: 1250,
+    keywords: [
+      "hats",
+      "winter hats",
+      "beanies",
+      "tuques",
+      "apparel",
+      "womens"
+    ]
+  },
+  {
+    id: "ee1f7c56-f977-40a4-9642-12ba5072e2b0",
+    image: "images/products/men-chino-pants-beige.jpg",
+    name: "Men's Classic-fit Pleated Chino Pants",
+    rating: {
+      stars: 4.5,
+      count: 9017
+    },
+    priceCents: 2290,
+    keywords: [
+      "pants",
+      "apparel",
+      "mens"
+    ]
+  },
+  {
+    id: "1c079479-8586-494f-ab53-219325432536",
+    image: "images/products/men-athletic-shoes-green.jpg",
+    name: "Men's Athletic Sneaker",
+    rating: {
+      stars: 4,
+      count: 229
+    },
+    priceCents: 3890,
+    keywords: [
+      "shoes",
+      "running shoes",
+      "footwear",
+      "mens"
+    ]
+  },
+  {
+    id: "4df68c27-fd59-4a6a-bbd1-e754ddb6d53c",
+    image: "images/products/men-navigator-sunglasses-brown.jpg",
+    name: "Men's Navigator Sunglasses Pilot",
+    rating: {
+      stars: 3.5,
+      count: 42
+    },
+    priceCents: 1690,
+    keywords: [
+      "sunglasses",
+      "glasses",
+      "accessories",
+      "shades"
+    ]
+  },
+  {
+    id: "4e37dd03-3b23-4bc6-9ff8-44e112a92c64",
+    image: "images/products/non-stick-cooking-set-15-pieces.webp",
+    name: "Non-Stick Cookware Set, Pots, Pans and Utensils - 15 Pieces",
+    rating: {
+      stars: 4.5,
+      count: 511
+    },
+    priceCents: 6797,
+    keywords: [
+      "cooking set",
+      "kitchen"
+    ]
+  },
+  {
+    id: "a434b69f-1bc1-482d-9ce7-cd7f4a66ce8d",
+    image: "images/products/vanity-mirror-silver.jpg",
+    name: "Vanity Mirror with Heavy Base - Chrome",
+    rating: {
+      stars: 4.5,
+      count: 130
+    },
+    priceCents: 1649,
+    keywords: [
+      "bathroom",
+      "washroom",
+      "mirrors",
+      "home"
+    ]
+  },
+  {
+    id: "a45cfa0a-66d6-4dc7-9475-e2b01595f7d7",
+    image: "images/products/women-french-terry-fleece-jogger-camo.jpg",
+    name: "Women's Fleece Jogger Sweatpant",
+    rating: {
+      stars: 4.5,
+      count: 248
+    },
+    priceCents: 2400,
+    keywords: [
+      "pants",
+      "sweatpants",
+      "jogging",
+      "apparel",
+      "womens"
+    ]
+  },
+  {
+    id: "d339adf3-e004-4c20-a120-40e8874c66cb",
+    image: "images/products/double-elongated-twist-french-wire-earrings.webp",
+    name: "Double Oval Twist French Wire Earrings - Gold",
+    rating: {
+      stars: 4.5,
+      count: 117
+    },
+    priceCents: 2400,
+    keywords: [
+      "accessories",
+      "womens"
+    ]
+  },
+  {
+    id: "d37a651a-d501-483b-aae6-a9659b0757a0",
+    image: "images/products/round-airtight-food-storage-containers.jpg",
+    name: "Round Airtight Food Storage Containers - 5 Piece",
+    rating: {
+      stars: 4,
+      count: 126
+    },
+    priceCents: 2899,
+    keywords: [
+      "boxes",
+      "food containers",
+      "kitchen"
+    ]
+  },
+  {
+    id: "0d7f9afa-2efe-4fd9-b0fd-ba5663e0a524",
+    image: "images/products/coffeemaker-with-glass-carafe-black.jpg",
+    name: "Coffeemaker with Glass Carafe and Reusable Filter - 25 Oz, Black",
+    rating: {
+      stars: 4.5,
+      count: 1211
+    },
+    priceCents: 2250,
+    keywords: [
+      "coffeemakers",
+      "kitchen",
+      "appliances"
+    ]
+  },
+  {
+    id: "02e3a47e-dd68-467e-9f71-8bf6f723fdae",
+    image: "images/products/blackout-curtains-black.jpg",
+    name: "Blackout Curtains Set 42 x 84-Inch - Black, 2 Panels",
+    rating: {
+      stars: 4.5,
+      count: 363
+    },
+    priceCents: 3099,
+    keywords: [
+      "bedroom",
+      "home"
+    ]
+  },
+  {
+    id: "8a53b080-6d40-4a65-ab26-b24ecf700bce",
+    image: "images/products/cotton-bath-towels-teal.webp",
+    name: "100% Cotton Bath Towels - 2 Pack, Light Teal",
+    rating: {
+      stars: 4.5,
+      count: 93
+    },
+    priceCents: 2110,
+    keywords: [
+      "bathroom",
+      "home",
+      "towels"
+    ]
+  },
+  {
+    id: "10ed8504-57db-433c-b0a3-fc71a35c88a1",
+    image: "images/products/knit-athletic-sneakers-pink.webp",
+    name: "Waterproof Knit Athletic Sneakers - Pink",
+    rating: {
+      stars: 4,
+      count: 89
+    },
+    priceCents: 3390,
+    keywords: [
+      "shoes",
+      "running shoes",
+      "footwear",
+      "womens"
+    ]
+  },
+  {
+    id: "77a845b1-16ed-4eac-bdf9-5b591882113d",
+    image: "images/products/countertop-blender-64-oz.jpg",
+    name: "Countertop Blender - 64oz, 1400 Watts",
+    rating: {
+      stars: 4,
+      count: 3
+    },
+    priceCents: 10747,
+    keywords: [
+      "food blenders",
+      "kitchen",
+      "appliances"
+    ]
+  },
+  {
+    id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
+    image: "images/products/floral-mixing-bowl-set.jpg",
+    name: "10-Piece Mixing Bowl Set with Lids - Floral",
+    rating: {
+      stars: 5,
+      count: 679
+    },
+    priceCents: 3899,
+    keywords: [
+      "mixing bowls",
+      "baking",
+      "cookware",
+      "kitchen"
+    ]
+  },
+  {
+    id: "aaa65ef3-8d6f-4eb3-bc9b-a6ea49047d8f",
+    image: "images/products/kitchen-paper-towels-30-pack.jpg",
+    name: "2-Ply Kitchen Paper Towels - 30 Pack",
+    rating: {
+      stars: 4.5,
+      count: 1045
+    },
+    priceCents: 5799,
+    keywords: [
+      "kitchen",
+      "kitchen towels",
+      "tissues"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a955",
+    image: "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
+    name: "Men's Full-Zip Hooded Fleece Sweatshirt",
+    rating: {
+      stars: 4.5,
+      count: 3157
+    },
+    priceCents: 2400,
+    keywords: [
+      "sweaters",
+      "hoodies",
+      "apparel",
+      "mens"
+    ]
+  }  
+].map(p => ({
+    id: String(p.id),
+    name: p.name,
+    price: p.price !== undefined ? p.price : (p.priceCents ? p.priceCents / 100 : 0),
+    rating: typeof p.rating === "object" ? p.rating.stars : p.rating,
+    reviews: typeof p.rating === "object" ? p.rating.count : p.reviews,
+    image: p.image,
+    desc: p.desc || "",
+    keywords: p.keywords ? p.keywords : []
+  }));
+
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  let loggedIn = localStorage.getItem('loggedIn') === 'true';
+
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  // Render products, optionally filtered
+  function renderProducts(list = products) {
+    const productsDiv = document.getElementById('products');
+    productsDiv.innerHTML = '';
+    if (list.length === 0) {
+      productsDiv.innerHTML = '<div class="col-span-full text-center text-gray-500 text-lg">No products found.</div>';
+      return;
+    }
+    list.forEach(product => {
+      productsDiv.innerHTML += `
+        <div class="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center hover:shadow-2xl transition group fade-in slide-in-up">
+          <img src="${product.image}" alt="${product.name}" class="w-40 h-40 object-cover rounded-lg mb-4 border-4 border-blue-200 group-hover:scale-105 group-hover:border-blue-400 transition-transform duration-300 shadow-md pop">
+          <h3 class="font-semibold text-lg text-center mb-2 text-purple-900">${product.name}</h3>
+          <div class="flex items-center mb-2">
+            <span class="text-yellow-400 text-xl mr-1">${'★'.repeat(Math.floor(product.rating))}</span>
+            <span class="text-gray-500 text-sm ml-1">(${product.reviews})</span>
+          </div>
+          <div class="text-xl font-bold text-purple-700 mb-2">$${product.price.toFixed(2)}</div>
+          <p class="text-gray-500 text-sm mb-4">${product.desc}</p>
+          <div class="flex gap-2">
+            <a href="product.html?id=${product.id}" class="bg-purple-100 text-purple-900 px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-200 transition pop">Details</a>
+            <button onclick="addToCart('${product.id}')" class="bg-yellow-400 hover:bg-yellow-500 text-purple-900 font-bold px-4 py-2 rounded-lg shadow transition-all duration-200 hover:scale-105 pop">Add to Cart</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // Search logic
+  function searchProducts(query) {
+    query = query.trim().toLowerCase();
+    if (!query) {
+      renderProducts(products);
+      return;
+    }
+    const filtered = products.filter(product =>
+      product.name.toLowerCase().includes(query) ||
+      (product.desc && product.desc.toLowerCase().includes(query)) ||
+      (product.keywords && product.keywords.join(' ').toLowerCase().includes(query))
+    );
+    renderProducts(filtered);
+  }
+
+  // Add scroll to cart items for better UX if many products
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartItemsDiv = document.getElementById('cart-items');
+    if (cartItemsDiv) {
+      cartItemsDiv.style.maxHeight = '300px';
+      cartItemsDiv.style.overflowY = 'auto';
+    }
+  });
+
+  // Cart logic
+  function addToCart(id) {
+    id = String(id);
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+    const item = cart.find(i => i.id === id);
+    if (item) {
+      item.qty += 1;
+    } else {
+      cart.push({ ...product, qty: 1 });
+    }
+    saveCart();
+    updateCartCount();
+    animateCart();
+  }
+
+  function updateCartCount() {
+    document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+  }
+
+  function animateCart() {
+    const cartBtn = document.getElementById('cart-btn');
+    cartBtn.classList.add('animate-bounce');
+    setTimeout(() => cartBtn.classList.remove('animate-bounce'), 500);
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    if (cart.length === 0) {
+      cartItems.innerHTML = '<p class="text-gray-500">Your cart is empty.</p>';
+      cartTotal.textContent = '$0.00';
+      return;
+    }
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price * item.qty;
+      cartItems.innerHTML += `
+        <div class="flex items-center justify-between fade-in">
+          <div class="flex items-center gap-3">
+            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded border-2 border-blue-200 pop">
+            <div>
+              <div class="font-semibold text-blue-900">${item.name}</div>
+              <div class="text-sm text-gray-500">$${item.price.toFixed(2)} x ${item.qty}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="changeQty('${item.id}', -1)" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">-</button>
+            <span class="font-bold">${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">+</button>
+            <button onclick="removeFromCart('${item.id}')" class="ml-2 text-red-500 hover:underline">Remove</button>
+          </div>
+        </div>
+      `;
+    });
+    cartTotal.textContent = '$' + total.toFixed(2);
+    saveCart();
+  }
+
+  function changeQty(id, delta) {
+    id = String(id);
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+      cart = cart.filter(i => i.id !== id);
+    }
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  function removeFromCart(id) {
+    id = String(id);
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  function checkout() {
+    if (cart.length === 0) return;
+    if (!loggedIn) {
+      alert('Please login to checkout!');
+      toggleLogin();
+      return;
+    }
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    orders.push({
+      id: Date.now(),
+      items: cart,
+      total,
+      date: new Date().toLocaleString()
+    });
+    localStorage.setItem('orders', JSON.stringify(orders));
+    cart = [];
+    saveCart();
+    updateCartCount();
+    renderCart();
+    alert('Order placed successfully!');
+    window.location.href = "orders.html";
+  }
+
+  // Login logic
+  function toggleLogin() {
+    document.getElementById('login-modal').classList.toggle('hidden');
+  }
+  function login(e) {
+    e.preventDefault();
+    loggedIn = true;
+    localStorage.setItem('loggedIn', 'true');
+    toggleLogin();
+    alert('Logged in!');
+  }
+
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('cart-btn').onclick = toggleCart;
+    document.getElementById('cart-modal').onclick = function(e) {
+      if (e.target === this) toggleCart();
+    };
+    document.getElementById('login-btn').onclick = toggleLogin;
+
+    // Search input event
+    const searchInput = document.querySelector('input[placeholder="Search products..."]');
+    searchInput.addEventListener('input', function() {
+      searchProducts(this.value);
+    });
+
+    // Initial render
+    renderProducts();
+    updateCartCount();
+  });
+</script>
+</body>
+</html>
